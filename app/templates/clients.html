@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="client-management">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search clients...">
+        <button id="searchBtn">Search</button>
+        <button id="addClientBtn">Add New Client</button>
+    </div>
+
+    <div id="clientModal" class="modal">
+        <!-- Client form will be loaded here -->
+    </div>
+
+    <table id="clientsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Programs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Client data will be loaded here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="{{ url_for('static', filename='js/clients.js') }}"></script>
+{% endblock %}

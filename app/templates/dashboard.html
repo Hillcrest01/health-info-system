@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total Clients</h3>
+            <p id="totalClients">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Active Programs</h3>
+            <p id="totalPrograms">0</p>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script>
+    // Fetch and display stats
+    fetch('/api/clients/count')
+        .then(res => res.json())
+        .then(data => document.getElementById('totalClients').textContent = data.count);
+    
+    fetch('/api/programs/count')
+        .then(res => res.json())
+        .then(data => document.getElementById('totalPrograms').textContent = data.count);
+</script>
+{% endblock %}
