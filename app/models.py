@@ -29,8 +29,8 @@ class Program(db.Model):
 #Enrollment table to ensure the many-many relationship between clients and programs
 class Enrollment(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    client_id = db.Column(db.Integer, db.ForeignKey('client_id'), nullable = False)
-    program_id = db.Column(db.Integer, db.ForeignKey('program_id') , nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable = False)
+    program_id = db.Column(db.Integer, db.ForeignKey('program.id') , nullable=False)
     enrolled_at = db.Column(db.DateTime, default = datetime.utcnow)
     notes = db.Column(db.Text)
 

@@ -11,6 +11,10 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+    #routes registration
+    from .auth import auth_routes
+    auth_routes(app)
+
     #create database tables
     with app.app_context():
         db.create_all()
@@ -26,5 +30,15 @@ def create_app():
             )
             db.session.add(default_doctor)
             db.session.commit()
+
+            #JWT Settings
+            @jwt.user_identity_loader
+            def user_identity_lookup(doctor):
+                return doctor.id
+            
+            @jwt.user_lookup_loader
+            def user_lookup_callback(_jwt_header, jwt_data):
+                identity = jwt_data['sub']
+                return Doctor.query.get(identity)
 
     return app
