@@ -30,6 +30,9 @@ def create_app():
     from .api import api_routes
     api_routes(app)
 
+    from .app import app_routes
+    app_routes(app)
+
     #create database tables
     with app.app_context():
         db.create_all()

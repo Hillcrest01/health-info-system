@@ -127,3 +127,41 @@ def api_routes(app):
             "client_name": e.client.name,
             "enrolled_at": e.enrolled_at.isoformat()
         } for e in enrollments])
+
+
+    @app.route('/api/clients/search', methods=['GET'])
+    def search_clients():
+     """
+     Search clients with multiple filters
+     Example: /api/clients/search?name=John&age=30&gender=male&program=HIV
+     """
+      # Get query parameters
+     name = request.args.get('name')
+     age = request.args.get('age')
+     gender = request.args.get('gender')
+     program_name = request.args.get('program')
+
+     # Build query
+     query = Client.query
+    
+     if name:
+         query = query.filter(Client.name.ilike(f'%{name}%'))
+     if age:
+        query = query.filter_by(age=age)
+     if gender:
+        query = query.filter_by(gender=gender.lower())
+     if program_name:
+          query = query.join(Enrollment).join(Program).filter(
+            Program.name.ilike(f'%{program_name}%')
+        )
+
+    # Execute and format results
+     clients = query.all()
+     return jsonify([{
+        'id': c.id,
+        'name': c.name,
+        'age': c.age,
+        'gender': c.gender,
+        'programs': [e.program.name for e in c.enrollments]
+    } for c in clients])
+    
