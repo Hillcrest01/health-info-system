@@ -8,6 +8,10 @@ class Doctor(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
 
+    def check_password(self, password):
+        from .extensions import bcrypt
+        return bcrypt.check_password_hash(self.password, password)
+
 #Clients Table
 class Client(db.Model):
     id  = db.Column(db.Integer, primary_key = True)
@@ -20,7 +24,7 @@ class Client(db.Model):
 class Program(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100) , nullable = False)
-    description = db.Column(db.text)
+    description = db.Column(db.Text)
 
 #Enrollment table to ensure the many-many relationship between clients and programs
 class Enrollment(db.Model):
